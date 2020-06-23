@@ -20,7 +20,11 @@ public class GenericExceptionHandler {
 		if(exceptionClass.contains("ConstraintViolationException")) {
 			exceptionMessage = "Password has not the met the elgibility criteria. Minimum length is 8 and maximum length is 10";
 		}else if(exceptionClass.contains("DataIntegrityViolationException")) {
-			exceptionMessage = "User name already exists ! ";
+			if(exception.getMessage().contains("constraint [null]")){
+				exceptionMessage = "Null or Empty Username is not allowed ! ";
+			}else {
+				exceptionMessage = "User name already exists ! ";
+			}
 		}
 		ExceptionResponse exceptionResponse = new ExceptionResponse(exceptionMessage, HttpStatus.BAD_REQUEST.toString());
 		return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST);
